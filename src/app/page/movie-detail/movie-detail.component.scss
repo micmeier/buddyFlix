@@ -1,0 +1,29 @@
+.poster {
+  width: 300px;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+.carousel {
+  height: 50px;
+}
+
+.main-info {
+  display: flex;
+  gap: 5rem;
+}
+
+.movie-info {
+  width: 800px;
+}
+
+h1.primary-color {
+  color: var(--primary-color);
+  margin-bottom: 0.1rem;
+}
+h5{
+  margin-bottom: 2rem;
+}
+p {
+  font-size: 1.25rem; /* Adjust font size as needed */
+}

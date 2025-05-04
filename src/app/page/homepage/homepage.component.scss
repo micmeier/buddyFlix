@@ -1,0 +1,9 @@
+.auto-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20vw, 1fr));
+  gap: 1rem; /* Adjust spacing between cards */
+}
+
+textarea {
+  font-size: 1.25rem; /* Adjust the size as needed */
+}
