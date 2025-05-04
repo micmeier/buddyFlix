@@ -1,0 +1,53 @@
+<div class="card" [ngStyle]="{'background': 'linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(https://image.tmdb.org/t/p/original' + movieDetails().backdrop_path + ')', 'background-size': 'cover', 'background-position': 'center'}">
+  <div class="main-info">
+    <img class="poster"
+         src="https://image.tmdb.org/t/p/original{{movieDetails().poster_path}}"
+         alt="Image"/>
+    <div class="movie-info">
+      <h1 class="-mb-2">
+        {{movieDetails().title}}
+        <span>({{getReleaseYear()}})</span>
+      </h1>
+      <div class="flex items-center flex-col sm:flex-row">
+       @for(genre of movieDetails().genres; track genre.id) {
+          <p-chip label="{{genre.name}}" styleClass="m-1"></p-chip>
+        }
+      </div>
+      <h5 class="mt-10"><em>{{movieDetails().tagline}}</em></h5>
+      <p class="mt-12">{{movieDetails().overview}}</p>
+      <p class="mt-12"> Watch on:</p>
+      <div class="flex gap-8">
+        @for(provider of movieDetails()['watch/providers'].results.CH.flatrate; track provider.provider_id) {
+            <img
+              src="https://image.tmdb.org/t/p/original{{provider.logo_path}}"
+              style="width: 75px; height: 75px;"
+              alt="Provider Logo"
+            />
+        }
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="card">
+  <h2>Cast</h2>
+  <p-carousel class="carousel" [value]="movieDetails().credits.cast" [numVisible]="5" [numScroll]="5" [circular]="false">
+    <ng-template let-cast #item>
+      <div class="border border-surface rounded-border m-2 p-4">
+        <div class="mb-4">
+          <div class="relative mx-auto">
+            <img
+              src="https://image.tmdb.org/t/p/original{{cast.profile_path}}"
+              class="w-full rounded-border"
+              onerror="this.src='assets/image/empty_person.jpg'; this.style.height='400px';"
+            />
+          </div>
+        </div>
+        <div class="text-center">
+          <p class="font-bold">{{ cast.name }}</p>
+          <p>{{ cast.character }}</p>
+        </div>
+      </div>
+    </ng-template>
+  </p-carousel>
+</div>

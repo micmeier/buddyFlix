@@ -1,0 +1,8 @@
+<a [routerLink]="['/movies', movie().id]">
+  <div class="card movie-card">
+      <img
+        src="https://image.tmdb.org/t/p/original{{movie().poster_path}}}"
+        alt="Image"/>
+      <p class="primary-color">{{ movie().title }} ({{getReleaseYear()}})</p>
+  </div>
+</a>

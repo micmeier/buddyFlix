@@ -1,0 +1,15 @@
+.movie-card {
+  width: 20vw; /* 20% of the viewport width */
+  margin: 2rem 0.5rem 0 0.5rem; /* Add 1rem margin to the top, and 0.5rem to the sides */
+  overflow: hidden;
+}
+
+.movie-card p {
+  text-align: center; /* Center-align the text */
+  margin: 0.5rem 0; /* Add spacing around the text */
+  font-size: 1.25rem; /* Adjust font size as needed */
+}
+
+p.primary-color {
+  color: var(--primary-color); // Use a CSS variable or a specific color
+}

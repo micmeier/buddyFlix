@@ -1,0 +1,18 @@
+<div class="flex justify-center">
+    <p-floatlabel >
+      <p-input-group>
+        <textarea id="prompt" pTextarea [autoResize]="true" rows="2" cols="70"></textarea>
+        <p-button icon="pi pi-search" />
+      </p-input-group>
+      <label for="prompt">Describe the kind of movie you feel like watching...</label>
+    </p-floatlabel>
+</div>
+
+<div class="grid auto-grid gap-2">
+  @for (movie of movies(); track movie.id) {
+    <app-movie-card
+      [movie]="movie"
+    />
+  }
+</div>
+
