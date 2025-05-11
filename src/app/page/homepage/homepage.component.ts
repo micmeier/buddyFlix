@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, resource, ResourceRef, signal, WritableSignal, effect} from '@angular/core';
 import {TextareaModule} from 'primeng/textarea';
 import {InputGroup} from 'primeng/inputgroup';
 import {Button} from 'primeng/button';
@@ -7,7 +7,8 @@ import {MovieCardComponent} from '../../component/movie-card/movie-card.componen
 import {TmdbService} from '../../service/tmdb.service';
 import {Movie} from 'tmdb-ts';
 import {MovieRecommendation} from '../../model/movie-recommendation.model';
-import {signal, WritableSignal} from '@angular/core';
+import { runFlow } from 'genkit/beta/client';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-homepage',
@@ -16,32 +17,40 @@ import {signal, WritableSignal} from '@angular/core';
     InputGroup,
     Button,
     FloatLabel,
-    MovieCardComponent
+    MovieCardComponent,
+    ReactiveFormsModule
   ],
   templateUrl: './homepage.component.html',
   styleUrl: './homepage.component.scss'
 })
-export class Homepage implements OnInit{
+export class Homepage {
   movies: WritableSignal<Movie[]> = signal([]);
+  request = signal('Random movies');
+  promptText = new FormControl('');
 
-  constructor(private tmdbService: TmdbService) {}
+  movieResource = resource({
+    request: () => this.request(),
+    loader: ({request}) => runFlow({ url: 'movies', input: request })
+  });
 
-  ngOnInit(): void {
-    const movieRecommendations: MovieRecommendation[] = [
-      { title: 'Inception', release_year: 2010 },
-      { title: 'The Matrix', release_year: 1999 },
-      { title: 'Interstellar', release_year: 2014 },
-      { title: 'The Dark Knight', release_year: 2008 },
-      { title: 'Pulp Fiction', release_year: 1994 }
-    ];
 
-    this.fetchMovies(movieRecommendations);
+  constructor(private tmdbService: TmdbService) {
+    effect(() => {
+      this.fetchMovies(this.movieResource.value()?? []);
+    });
+
+  }
+
+  public onSearch(): void {
+    const request = this.promptText.value as string
+    this.request.set(request);
+    console.log("request", request);
   }
 
   private async fetchMovies(movieRecommendations: MovieRecommendation[]): Promise<void> {
     try {
       const moviePromises = movieRecommendations.map((movie: MovieRecommendation): Promise<Movie[]> =>
-        this.tmdbService.searchMovie(movie.title, movie.release_year)
+        this.tmdbService.searchMovie(movie.title, movie.year)
       );
 
       const results = await Promise.all(moviePromises);
