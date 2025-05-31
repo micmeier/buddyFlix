@@ -11,6 +11,8 @@ RUN npm install --force
 # Copy the rest of the app source
 COPY . .
 
+RUN npm run build
+
 # Stage 2: Run the SSR app
 FROM node:20-alpine
 
@@ -21,9 +23,7 @@ WORKDIR /app
 COPY --from=builder /app /app
 
 # Expose Angular (4200) and Genkit Admin UI (4000)
-EXPOSE 4200
-EXPOSE 4000
+EXPOSE 8080
 
 # Start the SSR app with Genkit
-CMD ["/bin/sh", "-c", "echo | npm run start"]
-
+CMD ["npm", "run", "serve:ssr:buddyFlix"]
